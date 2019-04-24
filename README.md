@@ -1,1 +1,3 @@
 # redditcontentinator
+
+This is a simple client side script that allows you to load in new posts from reddit. You can sort via SFW/NSFW (the most important feature), subreddit, and you can change the load order to load in posts from top to bottom or bottom to top. More features in the future, including audio notifications. You can use this to monitor subreddits in real time. Lightly tested on firefox and chrome based browsers, I have no idea of compatibility issues, but it works for me soo...
