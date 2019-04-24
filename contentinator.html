@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style media="screen">
+    body{
+      margin:0px;
+      text-align: center;
+    }
+      img,iframe {
+        max-height: 50%;
+        max-width: 50%;
+      }
+      .header {
+        position: fixed;
+        width: 100%;
+        top: 0px;
+        opacity: 0.3
+      }
+      .header:hover {
+        opacity: 1;
+      }
+      .content {
+        margin-top: 25px;
+      }
+      .reverse {
+        display: flex;
+        flex-direction: column-reverse;
+      }
+    </style>
+  </head>
+  <body>
+      <div class="header">
+        <button type="button" id="pausefeed">Pause</button>
+        <button type="button" id="nsfwswitch">Switch to NSFW</button>
+        <button type="button" id="sortorder">Reverse Sort Order</button>
+        <select id="subselect">
+          <option value="">Subreddit</option>
+          <option value="all">All</option>
+        </select>
+        <select id="subselect">
+          <option value="">Sort Type</option>
+          <option value="new">new</option>
+          <option value="hot">hot</option>
+          <option value="controversial">controversial</option>
+          <option value="top">top</option>
+          <option value="rising">rising</option>
+        </select>
+      </div>
+    <div  id="reddit" class="content"></div>
+    </div>
+  </body>
+
+  <script type="text/javascript">
+  const postarr = [];
+  function prependtodiv(data, divid, postid) {
+    if(data) {
+      if(!postarr.includes(postid)) {
+        postarr.push(postid);
+        if(postarr.length == 1500) {
+          postarr.splice(0,200);
+        }
+        var div = document.getElementById(divid);
+        div.innerHTML += data;
+      }
+    }
+  }
+  function isEmpty(myObject) {
+      for(var key in myObject) {
+          if (myObject.hasOwnProperty(key)) {
+              return false;
+          }
+      }
+
+      return true;
+  }
+
+  function generatemarkup(data) {
+    if(data) {
+      return `
+        <div class="post" data-nsfw="${data.over_18}">
+        <b>Author: ${data.author}  -- Domain: ${data.domain} -- ${data.subreddit}</b><br>
+        <a href="https://www.reddit.com${data.permalink}" target="blank">${data.title}</a><br>
+        ${data.selftext ? data.selftext.substring(0,250) : ''}
+        ${!isEmpty(data.media_embed) ? data.media_embed.content : data.preview ? '<img src="'+data.preview.images[0].source.url+'">' : ''}
+        <br><hr>
+        </div>
+      `;
+    }
+  }
+
+  var urlParams = new URLSearchParams(window.location.search);
+  if(urlParams.has('subreddit')) {
+    var subreddit = urlParams.get('subreddit')
+  } else {
+    var subreddit = 'all'
+  }
+
+  if(urlParams.has('nsfw') & urlParams.get('nsfw') == 'true') {
+    var nsfwswitch = true;
+    document.getElementById('nsfwswitch').innerHTML = "Switch to SFW";
+  } else {
+   var nsfwswitch = false;
+  }
+
+  var paused = false;
+  var timer = window.setInterval(function() {
+    if(!paused) {
+      fetch('https://www.reddit.com/r/'+subreddit+'/new.json?raw_json=1&limit=1000').then((raw) => raw.json()).then(function(res) {
+        return res.data.children;
+      }).then(function(children) {
+        for (var i = 0; i < children.length; i++) {
+          if(!children[i].data.over_18 & !nsfwswitch) {
+            prependtodiv(generatemarkup(children[i].data), "reddit", children[i].data.id)
+          }
+          if(children[i].data.over_18 & nsfwswitch) {
+            prependtodiv(generatemarkup(children[i].data), "reddit", children[i].data.id)
+          }
+        }
+      }).catch(function(error) {
+        console.log(error);
+      })
+    }
+  }, 2000);
+
+  fetch('https://www.reddit.com/r/popular.json').then((raw) => raw.json()).then(function(res) {
+    return res.data.children;
+  }).then(function(children) {
+    for (var i = 0; i < children.length; i++) {
+      //probably need to dedupe this at some point but who cares 4 now
+      document.getElementById('subselect').innerHTML += '<option value="'+children[i].data.subreddit+'">'+children[i].data.subreddit+'</option>'
+    }
+  }).catch(function(error) {
+    console.log(error);
+  })
+
+  document.getElementById('pausefeed').addEventListener("click", function(e) {
+    e.preventDefault;
+    if(!paused) {
+      paused = true;
+      document.getElementById('pausefeed').innerHTML = "Resume"
+    } else {
+      paused = false;
+      document.getElementById('pausefeed').innerHTML = "Pause"
+    }
+  })
+
+  document.getElementById('nsfwswitch').addEventListener("click", function(e) {
+    e.preventDefault;
+    if(!nsfwswitch) {
+      window.location.href="?nsfw=true&subreddit="+subreddit
+    } else {
+      window.location.href="?nsfw=false&subreddit="+subreddit
+    }
+  });
+
+  document.getElementById('subselect').addEventListener("change", function(e) {
+    var selector = document.getElementById('subselect');
+    window.location.href="?subreddit="+selector[selector.selectedIndex].value
+  })
+  document.getElementById('sortorder').addEventListener("click", function(e) {
+    document.getElementById("reddit").classList.toggle("reverse");
+  });
+  //todo: audio notifs? add thread load sort functionality.
+</script>
+
+</html>
