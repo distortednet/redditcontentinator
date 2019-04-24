@@ -39,14 +39,14 @@
           <option value="">Subreddit</option>
           <option value="all">All</option>
         </select>
-        <!-- <select id="subselect">
-          <option value="">Sort Type</option>
+        <select id="sortby">
+          <option value="">Sort By</option>
           <option value="new">new</option>
           <option value="hot">hot</option>
           <option value="controversial">controversial</option>
           <option value="top">top</option>
           <option value="rising">rising</option>
-        </select> -->
+        </select>
       </div>
     <div  id="reddit" class="content"></div>
     </div>
@@ -97,6 +97,12 @@
     var subreddit = 'all'
   }
 
+  if(urlParams.has('sortby')) {
+    var subredditsort = urlParams.get('sortby');
+  } else {
+    var subredditsort = "new";
+  }
+
   if(urlParams.has('nsfw') & urlParams.get('nsfw') == 'true') {
     var nsfwswitch = true;
     document.getElementById('nsfwswitch').innerHTML = "Switch to SFW";
@@ -104,10 +110,43 @@
    var nsfwswitch = false;
   }
 
+  document.getElementById('pausefeed').addEventListener("click", function(e) {
+    e.preventDefault;
+    if(!paused) {
+      paused = true;
+      document.getElementById('pausefeed').innerHTML = "Resume"
+    } else {
+      paused = false;
+      document.getElementById('pausefeed').innerHTML = "Pause"
+    }
+  })
   var paused = false;
+
+  document.getElementById('nsfwswitch').addEventListener("click", function(e) {
+    e.preventDefault;
+    if(!nsfwswitch) {
+      window.location.href="?nsfw=true&subreddit="+subreddit+"&sortby="+subredditsort
+    } else {
+      window.location.href="?nsfw=false&subreddit="+subreddit+"&sortby="+subredditsort
+    }
+  });
+
+  document.getElementById('subselect').addEventListener("change", function(e) {
+    window.location.href="?nsfw="+nsfwswitch+"&subreddit="+document.getElementById('subselect')[document.getElementById('subselect').selectedIndex].value+"&sortby="+subredditsort
+  });
+
+  document.getElementById('sortorder').addEventListener("click", function(e) {
+    document.getElementById("reddit").classList.toggle("reverse");
+  });
+
+  document.getElementById('sortby').addEventListener("change", function(e) {
+    window.location.href="?nsfw="+nsfwswitch+"&subreddit="+subreddit+"&sortby="+document.getElementById('sortby')[document.getElementById('sortby').selectedIndex].value
+  });
+
   var timer = window.setInterval(function() {
     if(!paused) {
-      fetch('https://www.reddit.com/r/'+subreddit+'/new.json?raw_json=1&limit=1000').then((raw) => raw.json()).then(function(res) {
+
+      fetch('https://www.reddit.com/r/'+subreddit+'/'+subredditsort+'.json?raw_json=1&limit=1000').then((raw) => raw.json()).then(function(res) {
         return res.data.children;
       }).then(function(children) {
         for (var i = 0; i < children.length; i++) {
@@ -128,41 +167,11 @@
     return res.data.children;
   }).then(function(children) {
     for (var i = 0; i < children.length; i++) {
-      //probably need to dedupe this at some point but who cares 4 now
       document.getElementById('subselect').innerHTML += '<option value="'+children[i].data.subreddit+'">'+children[i].data.subreddit+'</option>'
     }
   }).catch(function(error) {
     console.log(error);
   })
-
-  document.getElementById('pausefeed').addEventListener("click", function(e) {
-    e.preventDefault;
-    if(!paused) {
-      paused = true;
-      document.getElementById('pausefeed').innerHTML = "Resume"
-    } else {
-      paused = false;
-      document.getElementById('pausefeed').innerHTML = "Pause"
-    }
-  })
-
-  document.getElementById('nsfwswitch').addEventListener("click", function(e) {
-    e.preventDefault;
-    if(!nsfwswitch) {
-      window.location.href="?nsfw=true&subreddit="+subreddit
-    } else {
-      window.location.href="?nsfw=false&subreddit="+subreddit
-    }
-  });
-
-  document.getElementById('subselect').addEventListener("change", function(e) {
-    var selector = document.getElementById('subselect');
-    window.location.href="?subreddit="+selector[selector.selectedIndex].value
-  })
-  document.getElementById('sortorder').addEventListener("click", function(e) {
-    document.getElementById("reddit").classList.toggle("reverse");
-  });
-  //todo: audio notifs? add thread load sort functionality.
 </script>
 
 </html>
