@@ -19,6 +19,7 @@ This script works mostly by url parameters. This is the easiest way to do things
 
 
 Future features (hopefully):
+ - input box to monitor subreddit of your choice (this can currently be done by manipulating the &subreddit= url parameter.)
  - audio notification on new posts with checkbox toggle
  - username/subreddit filter to help dedupe content by users that cross post, or to filter unwanted subreddits from /r/all
  - allow users to select the interval time for live loading content
