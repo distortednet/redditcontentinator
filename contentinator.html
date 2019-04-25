@@ -7,6 +7,16 @@
     body{
       margin:0px;
       text-align: center;
+      background-color: black;
+      color: #FAFAFA;
+      font-size: 13pt;
+    }
+    a {
+      color: white;
+      padding-bottom: 10px;
+    }
+    a:visited {
+      color: #c0c0c0;
     }
       img,iframe {
         max-height: 50%;
@@ -16,17 +26,25 @@
         position: fixed;
         width: 100%;
         top: 0px;
-        opacity: 0.3
+        opacity: 0.1
       }
       .header:hover {
         opacity: 1;
       }
       .content {
-        margin-top: 25px;
+        margin-top: 45px;
       }
       .reverse {
         display: flex;
         flex-direction: column-reverse;
+      }
+      hr{
+        border: 1px dashed grey;
+        width: 50%;
+      }
+      button,select {
+        padding: 8px;
+        font-size: 13pt;
       }
     </style>
   </head>
@@ -79,11 +97,11 @@
     if(data) {
       return `
         <div class="post">
-        <b>Author: ${data.author}  -- Domain: ${data.domain} -- ${data.subreddit}</b><br>
+        Author: ${data.author}  -- Domain: ${data.domain} -- ${data.subreddit}<br>
         <a href="https://www.reddit.com${data.permalink}" target="blank">${data.title}</a><br>
-        ${data.selftext ? data.selftext.substring(0,250) : ''}
-        ${!isEmpty(data.media_embed) ? data.media_embed.content : data.preview ? '<img src="'+data.preview.images[0].source.url+'">' : ''}
-        <br><hr>
+        ${!isEmpty(data.media_embed) ? data.media_embed.content : data.preview ? '<img src="'+data.preview.images[0].source.url+'">' : ''}<br>
+        ${data.selftext ? data.selftext.substring(0,250) + "<br>": ''}
+        <br><br><hr>
         </div>
       `;
     }
