@@ -17,9 +17,8 @@ This script is useful for either finding content, or monitoring a subreddit. For
 
 This script works mostly by url parameters. This is the easiest way to do things. When clicking buttons, you'll be redirected to the url, instead of updating the state of the script in real time.
 
-Eventually, audio notifications on new posts may be added as well as a username or subreddit filter, to prevent scenarios where you may load in content from users or bots that cross posts to multiple subreddits which will help de-dupe content.
 
-Future features:
+Future features (hopefully):
  - audio notification on new posts with checkbox toggle
  - username/subreddit filter to help dedupe content by users that cross post, or to filter unwanted subreddits from /r/all
  - allow users to select the interval time for live loading content
