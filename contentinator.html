@@ -53,33 +53,32 @@
   </body>
 
   <script type="text/javascript">
-  const postarr = [];
-  function prependtodiv(data, divid, postid) {
+  function prependtodiv(data, divid, postid, array) {
     if(data) {
-      if(!postarr.includes(postid)) {
-        postarr.push(postid);
-        if(postarr.length == 1500) {
-          postarr.splice(0,200);
+      if(!array.includes(postid)) {
+        array.push(postid);
+        if(array.length == 1500) {
+          array.splice(0,200);
         }
         var div = document.getElementById(divid);
         div.innerHTML += data;
       }
     }
   }
+
   function isEmpty(myObject) {
       for(var key in myObject) {
           if (myObject.hasOwnProperty(key)) {
               return false;
           }
       }
-
       return true;
   }
 
   function generatemarkup(data) {
     if(data) {
       return `
-        <div class="post" data-nsfw="${data.over_18}">
+        <div class="post">
         <b>Author: ${data.author}  -- Domain: ${data.domain} -- ${data.subreddit}</b><br>
         <a href="https://www.reddit.com${data.permalink}" target="blank">${data.title}</a><br>
         ${data.selftext ? data.selftext.substring(0,250) : ''}
@@ -90,7 +89,10 @@
     }
   }
 
+  const postarr = [];
   var urlParams = new URLSearchParams(window.location.search);
+  var paused = false;
+
   if(urlParams.has('subreddit')) {
     var subreddit = urlParams.get('subreddit')
   } else {
@@ -120,7 +122,6 @@
       document.getElementById('pausefeed').innerHTML = "Pause"
     }
   })
-  var paused = false;
 
   document.getElementById('nsfwswitch').addEventListener("click", function(e) {
     e.preventDefault;
@@ -143,18 +144,17 @@
     window.location.href="?nsfw="+nsfwswitch+"&subreddit="+subreddit+"&sortby="+document.getElementById('sortby')[document.getElementById('sortby').selectedIndex].value
   });
 
-  var timer = window.setInterval(function() {
+  var timer =  window.setInterval(function() {
     if(!paused) {
-
       fetch('https://www.reddit.com/r/'+subreddit+'/'+subredditsort+'.json?raw_json=1&limit=1000').then((raw) => raw.json()).then(function(res) {
         return res.data.children;
       }).then(function(children) {
         for (var i = 0; i < children.length; i++) {
           if(!children[i].data.over_18 & !nsfwswitch) {
-            prependtodiv(generatemarkup(children[i].data), "reddit", children[i].data.id)
+            prependtodiv(generatemarkup(children[i].data), "reddit", children[i].data.id, postarr)
           }
           if(children[i].data.over_18 & nsfwswitch) {
-            prependtodiv(generatemarkup(children[i].data), "reddit", children[i].data.id)
+            prependtodiv(generatemarkup(children[i].data), "reddit", children[i].data.id, postarr)
           }
         }
       }).catch(function(error) {
