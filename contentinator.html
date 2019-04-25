@@ -9,11 +9,14 @@
       text-align: center;
       background-color: black;
       color: #FAFAFA;
-      font-size: 13pt;
+
     }
     a {
-      color: white;
-      padding-bottom: 10px;
+      color: #FAFAFA;
+    }
+    .title {
+      font-size: 16pt;
+      text-decoration-style: dotted;
     }
     a:visited {
       color: #c0c0c0;
@@ -21,6 +24,7 @@
       img,iframe {
         max-height: 50%;
         max-width: 50%;
+        border: 1px dashed grey;
       }
       .header {
         position: fixed;
@@ -97,9 +101,9 @@
     if(data) {
       return `
         <div class="post">
-        Author: ${data.author}  -- Domain: ${data.domain} -- ${data.subreddit}<br>
-        <a href="https://www.reddit.com${data.permalink}" target="blank">${data.title}</a><br>
-        ${!isEmpty(data.media_embed) ? data.media_embed.content : data.preview ? '<img src="'+data.preview.images[0].source.url+'">' : ''}<br>
+        <a href="https://www.reddit.com${data.permalink}" target="blank" class="title">${data.title}</a><br><br>
+        Author: <a href="http://reddit.com/user/${data.author}" target="blank">${data.author}</a> | Domain: ${data.domain} | Subreddit: ${data.subreddit}<br>
+        ${!isEmpty(data.media_embed) ? data.media_embed.content + "<br>" : data.preview ? '<img src="'+data.preview.images[0].source.url+'"> <br>' : ''}
         ${data.selftext ? data.selftext.substring(0,250) + "<br>": ''}
         <br><br><hr>
         </div>
