@@ -142,9 +142,15 @@
   } else {
    var nsfwswitch = false;
   }
+
+  if (!window.location.search) {
+    document.getElementById("paramstate").innerHTML += "No settings selected, using defaults.";
+  }
+
   urlParams.forEach(function(value, key) {
     document.getElementById("paramstate").innerHTML += key + " = " + value + " | ";
   });
+
   document.getElementById('pausefeed').addEventListener("click", function(e) {
     e.preventDefault;
     if(!paused) {
@@ -176,12 +182,14 @@
   document.getElementById('sortby').addEventListener("change", function(e) {
     window.location.href="?nsfw="+nsfwswitch+"&subreddit="+subreddit+"&sortby="+document.getElementById('sortby')[document.getElementById('sortby').selectedIndex].value
   });
+
   document.getElementById('customsub').addEventListener("keyup", function(e) {
     if(e.keyCode == 13) {
       window.location.href="?nsfw="+nsfwswitch+"&subreddit="+document.getElementById("customsub").value+"&sortby="+subredditsort
     }
 
   });
+
   var timer =  window.setInterval(function() {
     if(!paused) {
       fetch('https://www.reddit.com/r/'+subreddit+'/'+subredditsort+'.json?raw_json=1&limit=1000').then((raw) => raw.json()).then(function(res) {
