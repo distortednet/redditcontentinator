@@ -36,7 +36,7 @@
         opacity: 1;
       }
       .content {
-        margin-top: 45px;
+        margin-top: 55px;
         width: 60%;
         margin-left: auto;
         margin-right: auto;
@@ -75,7 +75,8 @@
           <option value="top">top</option>
           <option value="rising">rising</option>
         </select>
-        <input type="text" name="" placeholder="input subreddit & press enter" id="customsub">
+        <input type="text" name="" placeholder="input subreddit & press enter" id="customsub"><br>
+        <div id="paramstate">Current Settings: </div>
       </div>
     <div  id="reddit" class="content"></div>
     </div>
@@ -126,7 +127,6 @@
   } else {
     var subreddit = 'all'
   }
-
   if(urlParams.has('sortby')) {
     var subredditsort = urlParams.get('sortby');
   } else {
@@ -139,7 +139,9 @@
   } else {
    var nsfwswitch = false;
   }
-
+  urlParams.forEach(function(value, key) {
+    document.getElementById("paramstate").innerHTML += key + " = " + value + " | ";
+  });
   document.getElementById('pausefeed').addEventListener("click", function(e) {
     e.preventDefault;
     if(!paused) {
