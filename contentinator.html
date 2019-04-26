@@ -22,8 +22,8 @@
       color: #c0c0c0;
     }
       img,iframe {
-        max-height: 50%;
-        max-width: 50%;
+        max-height: 70%;
+        max-width: 70%;
         border: 1px dashed grey;
       }
       .header {
@@ -37,6 +37,9 @@
       }
       .content {
         margin-top: 45px;
+        width: 60%;
+        margin-left: auto;
+        margin-right: auto;
       }
       .reverse {
         display: flex;
@@ -46,9 +49,12 @@
         border: 1px dashed grey;
         width: 50%;
       }
-      button,select {
+      button,select,input {
         padding: 8px;
         font-size: 13pt;
+      }
+      .selftext {
+        font-size: 15pt;
       }
     </style>
   </head>
@@ -69,6 +75,7 @@
           <option value="top">top</option>
           <option value="rising">rising</option>
         </select>
+        <input type="text" name="" placeholder="input subreddit & press enter" id="customsub">
       </div>
     <div  id="reddit" class="content"></div>
     </div>
@@ -96,15 +103,14 @@
       }
       return true;
   }
-
   function generatemarkup(data) {
     if(data) {
       return `
         <div class="post">
         <a href="https://www.reddit.com${data.permalink}" target="blank" class="title">${data.title}</a><br><br>
-        Author: <a href="http://reddit.com/user/${data.author}" target="blank">${data.author}</a> | Domain: ${data.domain} | Subreddit: ${data.subreddit}<br>
-        ${!isEmpty(data.media_embed) ? data.media_embed.content + "<br>" : data.preview ? '<img src="'+data.preview.images[0].source.url+'"> <br>' : ''}
-        ${data.selftext ? data.selftext.substring(0,250) + "<br>": ''}
+        Author: <a href="http://reddit.com/user/${data.author}" target="blank">${data.author}</a> | Domain: ${data.domain} | Subreddit: <a href="http://www.reddit.com/r/${data.subreddit}" target="blank">${data.subreddit}</a><br>
+        ${data.preview ? '<img src="'+data.preview.images[0].source.url+'"> <br>' : ''}
+        ${data.selftext ? '<p class="selftext">'+data.selftext.substring(0,250) + '</p>': ''}
         <br><br><hr>
         </div>
       `;
@@ -165,7 +171,12 @@
   document.getElementById('sortby').addEventListener("change", function(e) {
     window.location.href="?nsfw="+nsfwswitch+"&subreddit="+subreddit+"&sortby="+document.getElementById('sortby')[document.getElementById('sortby').selectedIndex].value
   });
+  document.getElementById('customsub').addEventListener("keyup", function(e) {
+    if(e.keyCode == 13) {
+      window.location.href="?nsfw="+nsfwswitch+"&subreddit="+document.getElementById("customsub").value+"&sortby="+subredditsort
+    }
 
+  });
   var timer =  window.setInterval(function() {
     if(!paused) {
       fetch('https://www.reddit.com/r/'+subreddit+'/'+subredditsort+'.json?raw_json=1&limit=1000').then((raw) => raw.json()).then(function(res) {
@@ -195,5 +206,5 @@
     console.log(error);
   })
 </script>
- 
+
 </html>
