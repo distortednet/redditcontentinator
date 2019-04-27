@@ -17,5 +17,5 @@ This script is useful for either finding content, or monitoring a subreddit. For
 
 
 Future features (hopefully):
- - audio notification on new posts with checkbox toggle
+ - make reverse sort order persist
  - ~~username/subreddit filter to help dedupe content~~ not possible in the context of project (local storage/session cannot be used on local files)
