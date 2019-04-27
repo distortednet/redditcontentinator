@@ -18,7 +18,7 @@ This script is useful for either finding content, or monitoring a subreddit. For
 
 Future features (hopefully):
  - make reverse sort order persist
- - timestamps
+ - filter by oc
  
  
  Not possibru features:
