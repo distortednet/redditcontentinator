@@ -135,7 +135,7 @@
         <div class="post">
         <a href="https://www.reddit.com${data.permalink}" target="blank" class="title">${data.title}</a><br><br>
         Author: <a href="http://reddit.com/user/${data.author}" target="blank">${data.author}</a> | Domain: ${data.domain} | Subreddit: <a href="http://www.reddit.com/r/${data.subreddit}" target="blank">${data.subreddit}</a><br>
-        <!-- ${data.preview ? '<img src="'+data.preview.images[0].source.url+'"> <br>' : ''} -->
+        ${data.preview ? '<img src="'+data.preview.images[0].source.url+'"> <br>' : ''}
         ${data.selftext ? '<p class="selftext">'+data.selftext.substring(0,250) + '</p>': ''}
         <br><br><hr>
         </div>
@@ -220,7 +220,7 @@
     }
 
   });
-  
+
   document.getElementById('audionotif').addEventListener('click', function(e) {
     if(!audionotif) {
       window.location.href="?nsfw="+nsfwswitch+"&subreddit="+subreddit+"&sortby="+subredditsort+"&audionotif=true"
