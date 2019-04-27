@@ -134,13 +134,26 @@
       return `
         <div class="post">
         <a href="https://www.reddit.com${data.permalink}" target="blank" class="title">${data.title}</a><br><br>
-        Author: <a href="http://reddit.com/user/${data.author}" target="blank">${data.author}</a> | Domain: ${data.domain} | Subreddit: <a href="http://www.reddit.com/r/${data.subreddit}" target="blank">${data.subreddit}</a><br>
+        Author: <a href="http://reddit.com/user/${data.author}" target="blank">${data.author}</a> | Domain: ${data.domain} | Subreddit: <a href="http://www.reddit.com/r/${data.subreddit}" target="blank">${data.subreddit}</a> | ${timeConverter(data.created_utc)}<br>
         ${data.preview ? '<img src="'+data.preview.images[0].source.url+'"> <br>' : ''}
         ${data.selftext ? '<p class="selftext">'+data.selftext.substring(0,250) + '</p>': ''}
         <br><br><hr>
         </div>
       `;
     }
+  }
+
+  function timeConverter(UNIX_timestamp){
+    var a = new Date(UNIX_timestamp * 1000);
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    var hour = a.getHours();
+    var min = a.getMinutes();
+    var sec = a.getSeconds();
+    var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+    return time;
   }
 
   const postarr = [];
@@ -236,6 +249,7 @@
       }).then(function(children) {
         for (var i = 0; i < children.length; i++) {
           if(!children[i].data.over_18 & !nsfwswitch) {
+
             !postarr.includes(children[i].data.id) & audionotif ? document.getElementById("audiocontainer").play() : null;
             prependtodiv(generatemarkup(children[i].data), "reddit", children[i].data.id, postarr)
           }
