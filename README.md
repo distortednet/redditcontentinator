@@ -20,7 +20,7 @@ Future features (hopefully):
  - make reverse sort order persist
  - filter by oc
  - filter by self
- 
+ - filter by user posts or comments
  
  Not possibru features:
  - ~~username/subreddit filter to help dedupe content~~ not possible in the context of project (local storage/session cannot be used on local files)
