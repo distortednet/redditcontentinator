@@ -21,6 +21,7 @@ Future features (hopefully):
  - filter by oc
  - filter by self
  - filter by user posts or comments
- - filter by region?
+ - filter by region? (seems unlikely)
+ - search filter using search.json https://www.reddit.com/r/redditdev/comments/6805ki/how_does_one_only_get_search_results_by_filtering/
  Not possibru features:
  - ~~username/subreddit filter to help dedupe content~~ not possible in the context of project (local storage/session cannot be used on local files)
