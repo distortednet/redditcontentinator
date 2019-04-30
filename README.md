@@ -8,7 +8,10 @@ This is a client side html/js monolithic script that will allow you to navigate 
  - Input a subreddit manually
  - Reverse the sort order so new posts load in on top of old posts. Default is new posts load under default posts.
  - Sort by hot/new/rising/etc
-  
+ - search user posts and comments
+ - search for post title or body+title
+ - audio notifications on new posts
+ 
 Download by clicking "clone or download" and downloading the zip file, or click here: https://github.com/distortednet/redditcontentinator/archive/master.zip
 
 This requires no server, and can run locally. Browser compatibility not guarenteed.
@@ -20,8 +23,14 @@ Future features (hopefully):
  - make reverse sort order persist
  - filter by oc
  - filter by self
- - filter by user posts or comments
- - filter by region? (seems unlikely)
  - search filter using search.json https://www.reddit.com/r/redditdev/comments/6805ki/how_does_one_only_get_search_results_by_filtering/
  Not possibru features:
- - ~~username/subreddit filter to help dedupe content~~ not possible in the context of project (local storage/session cannot be used on local files)
+ - filter by region - does not appear to be exposed in the api.
+ - username/subreddit filter to help dedupe content not possible in the context of project (local storage/session cannot be used on local files)
+
+bugs and misc todo/notes:
+- users that post all adult content will show no posts for comments or posts when filtering by user comment/posts
+- filter for sfw/nsfw content using reddit's url parameter filter?
+- audio notifications suddenly dont work???? wtf???
+- sorting by user posts should show post title, not comment url. comment url should only show when sorting by user comments.
+- work on button, select, and input states
