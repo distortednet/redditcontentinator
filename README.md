@@ -23,7 +23,7 @@ Future features (hopefully):
  - make reverse sort order persist
  - filter by oc
  - filter by self
- - search filter using search.json https://www.reddit.com/r/redditdev/comments/6805ki/how_does_one_only_get_search_results_by_filtering/
+ - work on button, select, and input states
  Not possibru features:
  - filter by region - does not appear to be exposed in the api.
  - username/subreddit filter to help dedupe content not possible in the context of project (local storage/session cannot be used on local files)
@@ -33,4 +33,4 @@ bugs and misc todo/notes:
 - filter for sfw/nsfw content using reddit's url parameter filter?
 - audio notifications suddenly dont work???? wtf???
 - sorting by user posts should show post title, not comment url. comment url should only show when sorting by user comments.
-- work on button, select, and input states
+
