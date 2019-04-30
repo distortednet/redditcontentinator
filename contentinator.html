@@ -32,6 +32,7 @@
         opacity: 0.1;
         border-bottom: 1px solid grey;
         background-color: black;
+        z-index: 1;
       }
       #header:hover {
         opacity: 1;
@@ -42,6 +43,12 @@
         width: 60%;
         margin-left: auto;
         margin-right: auto;
+        z-index: 0;
+        overflow:hidden;
+      }
+      .blur {
+        filter: blur(20px);
+        border: 1px solid red;
       }
       .reverse {
         display: flex;
@@ -55,7 +62,7 @@
         width: 50%;
       }
       button,select,input {
-        padding: 8px;
+        padding: 4px;
         font-size: 13pt;
       }
       .selftext {
@@ -81,8 +88,21 @@
           <option value="top">top</option>
           <option value="rising">rising</option>
         </select>
-        <input type="text" name="" placeholder="input subreddit & press enter" id="customsub"><br>
-        <div id="paramstate">Current Settings: </div>
+        <!-- <select id="filterby">
+          <option value="">Filter By</option>
+          <option value="titlebody">Orig. Content</option>
+          <option value="title">Self Posts</option>
+        </select> -->
+        <input type="text" name="" placeholder="input subreddit & press enter" id="customsub">
+        <input type="text" name="" placeholder="Search posts or filter by username" id="search">
+        <select id="searchtype">
+          <option value="">Search By</option>
+          <option value="title">Title</option>
+          <option value="body">Body</option>
+          <option value="userposts">Posts by user</option>
+          <option value="usercomments">Comments by user</option>
+        </select><br>
+        <div id="paramstate">Current Settings<br></div>
 
         <audio id="audiocontainer"><source id="audiosource" src="" type="audio/mp3"/></audio>
 
@@ -138,10 +158,11 @@
     if(data) {
       return `
         <div class="post">
-        <a href="https://www.reddit.com${data.permalink}" target="blank" class="title">${data.title}</a><br><br>
-        Author: <a href="http://reddit.com/user/${data.author}" target="blank">${data.author}</a> | Domain: ${data.domain} | Subreddit: <a href="http://www.reddit.com/r/${data.subreddit}" target="blank">${data.subreddit}</a> | ${timeConverter(data.created_utc)}<br>
-        ${data.preview ? '<img src="'+data.preview.images[0].source.url+'"> <br>' : ''}
-        ${data.selftext ? '<p class="selftext">'+data.selftext.substring(0,250) + '</p>': ''}
+        <a href="https://www.reddit.com${data.permalink}" target="blank" class="title">${urlParams.get("searchtype") == "usercomments" | (urlParams.get("searchtype") == "userposts") ? data.permalink : data.title}</a><br><br>
+        Author: <a href="?searchquery=${data.author}&searchtype=userposts">${data.author}</a> | Subreddit: <a href="http://www.reddit.com/r/${data.subreddit}" target="blank">${data.subreddit}</a> | ${timeConverter(data.created_utc)}<br>
+        <${data.preview ? '<img src="'+data.preview.images[0].source.url+'"><br>' : ''}
+        ${data.selftext ? '<p class="selftext">'+data.selftext+ '</p>': ''}
+        ${data.body ? '<p class="selftext">'+data.body+ '</p>': ''}
         <br><br><hr>
         </div>
       `;
@@ -165,8 +186,26 @@
   urlParams.has('nsfw') & urlParams.get('nsfw') == 'true' ? (nsfwswitch = true, document.getElementById('nsfwswitch').innerHTML = "Switch to SFW") : nsfwswitch = false;
   urlParams.has('audionotif') & urlParams.get('audionotif') == 'true' ? (audionotif = true, document.getElementById('audionotif').innerHTML = "Disable Audio") : audionotif = false;
   urlParams.forEach(function(value, key) {
-    document.getElementById("paramstate").innerHTML += key + " = " + value + " | ";
+    document.getElementById("paramstate").innerHTML += key + " = " + value + "<br>";
   });
+
+  if(urlParams.get("searchquery") && urlParams.get("searchtype")) {
+    document.getElementById("search").value = urlParams.get("searchquery");
+    if(urlParams.get("searchtype") == "title") {
+      var  fetchurl = 'https://www.reddit.com/search.json?q='+urlParams.get('searchquery')+'&limit=1000&raw_json=1&sort='+subredditsort
+    }
+    if(urlParams.get("searchtype") == "body") {
+      var  fetchurl = 'https://www.reddit.com/search.json?q=title:'+urlParams.get('searchquery')+'&limit=1000&raw_json=1&sort='+subredditsort
+    }
+    if(urlParams.get("searchtype") == "userposts") {
+      var fetchurl = 'https://www.reddit.com/user/'+urlParams.get('searchquery')+'.json?limit=1000&raw_json=1'
+    }
+    if(urlParams.get("searchtype") == "usercomments") {
+      var fetchurl = 'https://www.reddit.com/user/'+urlParams.get('searchquery')+'/comments.json?limit=1000&raw_json=1'
+    }
+  } else {
+      var fetchurl = 'https://www.reddit.com/r/'+subreddit+'/'+subredditsort+'.json?raw_json=1&limit=1000'
+  }
 
   document.getElementById('nsfwswitch').addEventListener("click", function(e) {
     e.preventDefault;
@@ -179,6 +218,8 @@
   });
   document.getElementById('subselect').addEventListener("change", function(e) {
     urlParams.delete("subreddit");
+    urlParams.delete('searchquery');
+    urlParams.delete('searchtype');
     window.location.href="?subreddit="+document.getElementById('subselect')[document.getElementById('subselect').selectedIndex].value + "&" + urlParams.toString();
   });
   document.getElementById('sortby').addEventListener("change", function(e) {
@@ -188,6 +229,8 @@
   document.getElementById('customsub').addEventListener("keyup", function(e) {
     if(e.keyCode == 13) {
       urlParams.delete('subreddit');
+      urlParams.delete('searchtype');
+      urlParams.delete('searchquery');
       window.location.href="?subreddit="+document.getElementById("customsub").value + "&" + urlParams.toString();
     }
   });
@@ -212,6 +255,14 @@
       document.getElementById('pausefeed').innerHTML = "Pause"
     }
   })
+  document.getElementById('searchtype').addEventListener('change', function(e) {
+    urlParams.delete('searchquery');
+    urlParams.delete('searchtype');
+    urlParams.delete('subreddit');
+    if(document.getElementById("search").value) {
+      window.location.href="?searchquery="+document.getElementById("search").value + "&searchtype="+document.getElementById('searchtype')[document.getElementById('searchtype').selectedIndex].value + "&" + urlParams.toString();
+    }
+  })
   document.addEventListener("scroll", function(e) {
     if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
       document.getElementById("header").className = "sticky";
@@ -219,10 +270,9 @@
       document.getElementById("header").className = "";
     }
   })
-
   var timer =  window.setInterval(function() {
     if(!paused) {
-      fetch('https://www.reddit.com/r/'+subreddit+'/'+subredditsort+'.json?raw_json=1&limit=1000').then((raw) => raw.json()).then(function(res) {
+      fetch(fetchurl).then((raw) => raw.json()).then(function(res) {
         return res.data.children;
       }).then(function(children) {
         for (var i = 0; i < children.length; i++) {
