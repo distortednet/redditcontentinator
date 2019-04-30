@@ -65,7 +65,7 @@
         <button type="button" id="pausefeed">Pause</button>
         <button type="button" id="nsfwswitch">Switch to NSFW</button>
         <button type="button" id="sortorder">Reverse Sort Order</button>
-        <button type="button" name="button" id="audionotif">Audio Notif</button>
+        <button type="button" name="button" id="audionotif">Enable Audio</button>
         <select id="subselect">
           <option value="">Subreddit</option>
           <option value="all">All</option>
@@ -160,39 +160,53 @@
     var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
     return time;
   }
-
-  if(urlParams.has('subreddit')) {
-    var subreddit = urlParams.get('subreddit')
-  } else {
-    var subreddit = 'all'
-  }
-
-  if(urlParams.has('sortby')) {
-    var subredditsort = urlParams.get('sortby');
-  } else {
-    var subredditsort = "new";
-  }
-
-  if(urlParams.has('nsfw') & urlParams.get('nsfw') == 'true') {
-    var nsfwswitch = true;
-    document.getElementById('nsfwswitch').innerHTML = "Switch to SFW";
-  } else {
-   var nsfwswitch = false;
-  }
-
-  if(urlParams.has('audionotif') & urlParams.get('audionotif') == 'true') {
-    document.getElementById('audionotif').innerHTML = "Disable Audio"
-    var audionotif = true;
-  } else {
-    var audionotif = false;
-  }
-
-  if(!window.location.search) {
-    document.getElementById("paramstate").innerHTML += "No settings selected, using defaults.";
-  }
+  urlParams.get('subreddit') ? subreddit = urlParams.get('subreddit') : subreddit = 'all'
+  urlParams.has('sortby') ? subredditsort = urlParams.get('sortby') : subredditsort = "new";
+  urlParams.has('nsfw') & urlParams.get('nsfw') == 'true' ? (nsfwswitch = true, document.getElementById('nsfwswitch').innerHTML = "Switch to SFW") : nsfwswitch = false;
+  urlParams.has('audionotif') & urlParams.get('audionotif') == 'true' ? (audionotif = true, document.getElementById('audionotif').innerHTML = "Disable Audio") : audionotif = false;
 
   urlParams.forEach(function(value, key) {
     document.getElementById("paramstate").innerHTML += key + " = " + value + " | ";
+  });
+
+  document.getElementById('nsfwswitch').addEventListener("click", function(e) {
+    e.preventDefault;
+    urlParams.delete("nsfw");
+    if(!nsfwswitch) {
+      window.location.href="?nsfw=true&" + urlParams.toString();
+    } else {
+      window.location.href="?nsfw=false&" + urlParams.toString();
+    }
+  });
+
+  document.getElementById('subselect').addEventListener("change", function(e) {
+    urlParams.delete("subreddit");
+    window.location.href="?subreddit="+document.getElementById('subselect')[document.getElementById('subselect').selectedIndex].value + "&" + urlParams.toString();
+  });
+
+  document.getElementById('sortby').addEventListener("change", function(e) {
+    urlParams.delete("sortby");
+    window.location.href="?sortby="+document.getElementById('sortby')[document.getElementById('sortby').selectedIndex].value + "&" + urlParams.toString();
+  });
+
+  document.getElementById('customsub').addEventListener("keyup", function(e) {
+    if(e.keyCode == 13) {
+      urlParams.delete('subreddit');
+      window.location.href="?subreddit="+document.getElementById("customsub").value + "&" + urlParams.toString();
+    }
+  });
+
+  document.getElementById('audionotif').addEventListener('click', function(e) {
+    urlParams.delete('audionotif')
+    if(!audionotif) {
+      window.location.href="?audionotif=true" + "&" + urlParams.toString();
+    } else {
+      window.location.href="?audionotif=false" + "&" + urlParams.toString();
+    }
+  })
+
+  document.getElementById('sortorder').addEventListener("click", function(e) {
+    document.getElementById("reddit").classList.toggle("reverse");
   });
 
   document.getElementById('pausefeed').addEventListener("click", function(e) {
@@ -203,42 +217,6 @@
     } else {
       paused = false;
       document.getElementById('pausefeed').innerHTML = "Pause"
-    }
-  })
-
-  document.getElementById('nsfwswitch').addEventListener("click", function(e) {
-    e.preventDefault;
-    if(!nsfwswitch) {
-      window.location.href="?nsfw=true&subreddit="+subreddit+"&sortby="+subredditsort+"&audionotif="+audionotif
-    } else {
-      window.location.href="?nsfw=false&subreddit="+subreddit+"&sortby="+subredditsort+"&audionotif="+audionotif
-    }
-  });
-
-  document.getElementById('subselect').addEventListener("change", function(e) {
-    window.location.href="?nsfw="+nsfwswitch+"&subreddit="+document.getElementById('subselect')[document.getElementById('subselect').selectedIndex].value+"&sortby="+subredditsort+"&audionotif="+audionotif
-  });
-
-  document.getElementById('sortorder').addEventListener("click", function(e) {
-    document.getElementById("reddit").classList.toggle("reverse");
-  });
-
-  document.getElementById('sortby').addEventListener("change", function(e) {
-    window.location.href="?nsfw="+nsfwswitch+"&subreddit="+subreddit+"&sortby="+document.getElementById('sortby')[document.getElementById('sortby').selectedIndex].value+"&audionotif="+audionotif
-  });
-
-  document.getElementById('customsub').addEventListener("keyup", function(e) {
-    if(e.keyCode == 13) {
-      window.location.href="?nsfw="+nsfwswitch+"&subreddit="+document.getElementById("customsub").value+"&sortby="+subredditsort+"&audionotif="+audionotif
-    }
-
-  });
-
-  document.getElementById('audionotif').addEventListener('click', function(e) {
-    if(!audionotif) {
-      window.location.href="?nsfw="+nsfwswitch+"&subreddit="+subreddit+"&sortby="+subredditsort+"&audionotif=true"
-    } else {
-      window.location.href="?nsfw="+nsfwswitch+"&subreddit="+subreddit+"&sortby="+subredditsort+"&audionotif=false"
     }
   })
 
