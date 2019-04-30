@@ -29,8 +29,7 @@ Future features (hopefully):
  - username/subreddit filter to help dedupe content not possible in the context of project (local storage/session cannot be used on local files)
 
 bugs and misc todo/notes:
-- users that post all adult content will show no posts for comments or posts when filtering by user comment/posts
-- filter for sfw/nsfw content using reddit's url parameter filter?
+- filter for sfw/nsfw content using reddit's url parameter filter (will maximize the amount of results returned for content type)
 - audio notifications suddenly dont work???? wtf???
 - sorting by user posts should show post title, not comment url. comment url should only show when sorting by user comments.
 
