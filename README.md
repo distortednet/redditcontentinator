@@ -24,10 +24,10 @@ Future features (hopefully):
  - filter by oc
  - filter by self
  - work on button, select, and input states
+ 
  Not possibru features:
  - filter by region - does not appear to be exposed in the api.
  - username/subreddit filter to help dedupe content not possible in the context of project (local storage/session cannot be used on local files)
 
 bugs and misc todo/notes:
-- filter for sfw/nsfw content using reddit's url parameter filter (will maximize the amount of results returned for content type)
 - audio notifications suddenly dont work???? wtf??? (seriously, WTF)
