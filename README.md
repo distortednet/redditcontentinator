@@ -30,6 +30,4 @@ Future features (hopefully):
 
 bugs and misc todo/notes:
 - filter for sfw/nsfw content using reddit's url parameter filter (will maximize the amount of results returned for content type)
-- audio notifications suddenly dont work???? wtf???
-- sorting by user posts should show post title, not comment url. comment url should only show when sorting by user comments.
-
+- audio notifications suddenly dont work???? wtf??? (seriously, WTF)
