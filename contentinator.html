@@ -190,8 +190,8 @@
   document.getElementById('audionotif').innerHTML = audionotif ? 'Disable Audio' : 'Enable Audio';
   document.getElementById('sortorder').innerHTML = reverse ? 'Decending Sort Order' : 'Ascending Sort Order';
   document.getElementById('search').value = urlParams.has("searchquery") ? urlParams.has("searchquery") : '';
-  urlParams.has("searchtype") & urlParams.has("searchquery") ? document.querySelector('#filterby [value="' + urlParams.get("searchtype") + '"]').selected = true : '';
-  // urlParams.has("searchtype") & urlParams.has("searchquery") ? document.querySelector('#searchtype [value="' + urlParams.get("searchtype") + '"]').selected = true : '';
+  urlParams.has("searchtype") & !urlParams.has("searchquery") ? document.querySelector('#filterby [value="' + urlParams.get("searchtype") + '"]').selected = true : '';
+  urlParams.has("searchtype") & urlParams.has("searchquery") ? document.querySelector('#searchtype [value="' + urlParams.get("searchtype") + '"]').selected = true : '';
   reverse ? document.getElementById("reddit").classList.add("reverse") : '';
 
   urlParams.has('subreddit') ? document.getElementById('customsub').value = subreddit : ''
