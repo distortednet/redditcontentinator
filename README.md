@@ -11,6 +11,7 @@ This is a client side html/js monolithic script that will allow you to navigate 
  - search user posts and comments
  - search for post title or body+title
  - audio notifications on new posts
+ - filter by OC
  
 Download by clicking "clone or download" and downloading the zip file, or click here: https://github.com/distortednet/redditcontentinator/archive/master.zip
 
@@ -20,9 +21,7 @@ This script is useful for either finding content, or monitoring a subreddit. For
 
 
 Future features (hopefully):
- - filter by oc
  - filter by self
- - work on button, select, and input states
  
  Not possibru features:
  - filter by region - does not appear to be exposed in the api.
