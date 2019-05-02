@@ -143,8 +143,8 @@
         <a href="https://www.reddit.com${data.permalink}" target="blank" class="title">${urlParams.get("searchtype") == "usercomments" | (urlParams.get("searchtype") == "userposts") & !data.title ? data.permalink : data.title}</a><br><br>
         Author: <a href="http://reddit.com/user/${data.author}" target="blank">${data.author}</a> | Subreddit: <a href="http://www.reddit.com/r/${data.subreddit}" target="blank">${data.subreddit}</a> | ${timeConverter(data.created_utc)}<br>
         ${data.preview ? '<img src="https://dummyimage.com/'+data.preview.images[0].source.height+'x'+data.preview.images[0].source.width+'/000/fff"><br>' : ''}
-        <!-- ${data.preview ? '<img src="'+data.preview.images[0].source.url+'"><br>' : ''} -->
-        ${data.selftext ? '<p class="selftext">'+data.selftext+ '</p>': ''}
+        ${data.preview ? '<img src="'+data.preview.images[0].source.url+'"><br>' : ''}
+        <!-- ${data.selftext ? '<p class="selftext">'+data.selftext+ '</p>': ''} -->
         ${data.body ? '<p class="selftext">'+data.body+ '</p>': ''}
         <br><br><hr>
         </div>
