@@ -21,11 +21,11 @@ This script is useful for either finding content, or monitoring a subreddit. For
 
 
 Future features (hopefully):
- - filter by self
  
- Not possibru features:
+ Not possibru/no reason to add features:
+ - filter by self - just does not seem worth adding.
  - filter by region - does not appear to be exposed in the api.
  - username/subreddit filter to help dedupe content not possible in the context of project (local storage/session cannot be used on local files)
 
 bugs and misc todo/notes:
-- audio notifications suddenly dont work???? wtf??? (seriously, WTF)
+- audio notifs now work somewhat, but can vary based on browser. Chromium on windows for example does not play audio at first but then plays after some time. chromium and linux based browsers may yield different or no result
