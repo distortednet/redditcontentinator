@@ -13,14 +13,19 @@ This is a client side html/js monolithic script that will allow you to navigate 
  - audio notifications on new posts
  - filter by OC
  
+ ----
+ 
 Download by clicking "clone or download" and downloading the zip file, or click here: https://github.com/distortednet/redditcontentinator/archive/master.zip
 
 This requires no server, and can run locally. Browser compatibility not guarenteed.
 
-This script is useful for either finding content, or monitoring a subreddit. For example, you could monitor AskReddit for new threads by selecting AskReddit, selecting new for the sort by field, and then clicking "reverse sort order" so new posts load first. You can also monitor all of reddit, although there are certain scenarios where this seems to crash the browser.
+This script is useful for either finding content, or monitoring a subreddit. For example, you could monitor AskReddit for new threads by selecting AskReddit, selecting new for the sort by field, and then clicking "ascending/descending sort order" so new posts load first.
+
+----
 
 
 Future features (hopefully):
+ - no new features to add at this time
  
  Not possibru/no reason to add features:
  - filter by self - just does not seem worth adding.
