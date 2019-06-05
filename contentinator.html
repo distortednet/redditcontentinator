@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title></title> <!-- make this update to show x num of new posts -->
     <style media="screen">
     body{
       margin:0px;
@@ -75,7 +75,6 @@
         <button type="button" id="pausefeed">Pause</button>
         <button type="button" id="nsfwswitch">Enable NSFW</button>
         <button type="button" id="sortorder">Ascending Sort Order</button>
-        <button type="button" name="button" id="audionotif">Enable Audio</button>
         <select id="subselect">
           <option value="">Subreddit</option>
           <option value="all">All</option>
@@ -110,11 +109,10 @@
   </body>
 
   <script type="text/javascript">
-  var audiofile = 'data:audio/mp3;base64,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'
-  const audioelement = new Audio(audiofile);
   const postarr = [];
   var urlParams = new URLSearchParams(window.location.search);
   var paused = false;
+  var dev = true;
 
   function prependtodiv(data, divid, postid, array) {
     if(data) {
@@ -142,8 +140,8 @@
         <div class="post">
         <a href="https://www.reddit.com${data.permalink}" target="blank" class="title">${urlParams.get("searchtype") == "usercomments" | (urlParams.get("searchtype") == "userposts") & !data.title ? data.permalink : data.title}</a><br><br>
         Author: <a href="http://reddit.com/user/${data.author}" target="blank">${data.author}</a> | Subreddit: <a href="http://www.reddit.com/r/${data.subreddit}" target="blank">${data.subreddit}</a> | ${timeConverter(data.created_utc)}<br>
-        <!--   ${data.preview ? '<img src="https://dummyimage.com/'+data.preview.images[0].source.height+'x'+data.preview.images[0].source.width+'/000/fff"><br>' : ''}  -->
-        ${data.preview ? '<img src="'+data.preview.images[0].source.url+'"><br>' : ''}
+        ${dev && data.preview ? '<img src="https://dummyimage.com/'+data.preview.images[0].source.height+'x'+data.preview.images[0].source.width+'/000/fff"><br>' : ''}
+        ${!dev && data.preview ? '<img src="'+data.preview.images[0].source.url+'"><br>' : ''}
         ${data.selftext ? '<p class="selftext">'+data.selftext+ '</p>': ''}
         ${data.body ? '<p class="selftext">'+data.body+ '</p>': ''}
         <br><br><hr>
@@ -166,12 +164,10 @@
   var subreddit = urlParams.get('subreddit') ? urlParams.get('subreddit') : 'all';
   var subredditsort = urlParams.get('sortby') ? urlParams.get('sortby') : 'new';
   var nsfwswitch = urlParams.get('nsfw') === 'true';
-  var audionotif = urlParams.get('audionotif') === 'true';
   var reverse = urlParams.get('reverse') === 'true';
 
   document.querySelector('#sortby [value="' + subredditsort + '"]').selected = true;
   document.getElementById('nsfwswitch').innerHTML = nsfwswitch ? 'Disable NSFW' : 'Enable NSFW';
-  document.getElementById('audionotif').innerHTML = audionotif ? 'Disable Audio' : 'Enable Audio';
   document.getElementById('sortorder').innerHTML = reverse ? 'Decending Sort Order' : 'Ascending Sort Order';
   document.getElementById('search').value = urlParams.has("searchquery") ? urlParams.has("searchquery") : '';
   urlParams.has("searchtype") & !urlParams.has("searchquery") ? document.querySelector('#filterby [value="' + urlParams.get("searchtype") + '"]').selected = true : '';
@@ -232,14 +228,6 @@
       window.location.href="?subreddit="+document.getElementById("customsub").value + "&" + urlParams.toString();
     }
   });
-  document.getElementById('audionotif').addEventListener('click', function(e) {
-    urlParams.delete('audionotif')
-    if(!audionotif) {
-      window.location.href="?audionotif=true" + "&" + urlParams.toString();
-    } else {
-      window.location.href="?audionotif=false" + "&" + urlParams.toString();
-    }
-  })
   document.getElementById('sortorder').addEventListener("click", function(e) {
     urlParams.delete('reverse')
     if(!reverse) {
@@ -291,11 +279,9 @@
       }).then(function(children) {
         for (var i = 0; i < children.length; i++) {
           if(!children[i].data.over_18 & !nsfwswitch) {
-            !postarr.includes(children[i].data.id) & audionotif ? audioelement.play() : null;
             prependtodiv(generatemarkup(children[i].data), "reddit", children[i].data.id, postarr)
           }
           if(children[i].data.over_18 & nsfwswitch) {
-            !postarr.includes(children[i].data.id) & audionotif ? audioelement.play() : null;
             prependtodiv(generatemarkup(children[i].data), "reddit", children[i].data.id, postarr)
           }
         }
