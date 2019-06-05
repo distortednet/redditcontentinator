@@ -10,7 +10,6 @@ This is a client side html/js monolithic script that will allow you to navigate 
  - Sort by hot/new/rising/etc
  - search user posts and comments
  - search for post title or body+title
- - audio notifications on new posts
  - filter by OC
  
  ----
@@ -23,7 +22,7 @@ This requires no server, and can run locally. Browser compatibility not guarente
 
 
 Future features (hopefully):
- - no new features to add at this time
+ - update title bar with new posts
  
 ----
 
@@ -31,6 +30,7 @@ Future features (hopefully):
  - filter by self - just does not seem worth adding.
  - filter by region - does not appear to be exposed in the api.
  - username/subreddit filter to help dedupe content not possible in the context of project (local storage/session cannot be used on local files)
+ - audio notifications are inconsistent with local html files.
  
 ----
 
