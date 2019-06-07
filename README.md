@@ -22,17 +22,14 @@ This requires no server, and can run locally. Browser compatibility not guarente
 
 
 Future features (hopefully):
- - update title bar with new posts
+ - update title bar to show x num of new posts loaded.
  
 ----
 
  Not possibru/no reason to add features:
- - filter by self - just does not seem worth adding.
+ - filter by self - just does not seem worth adding (maybe later)
  - filter by region - does not appear to be exposed in the api.
  - username/subreddit filter to help dedupe content not possible in the context of project (local storage/session cannot be used on local files)
- - audio notifications are inconsistent with local html files.
+ - audio notifications are inconsistent with local html files depending on browser & operating system. 
  
-----
 
-bugs and misc todo/notes:
-- audio notifs now work somewhat, but can vary based on browser. Chromium on windows for example does not play audio at first but then plays after some time. chromium and linux based browsers may yield different or no result
